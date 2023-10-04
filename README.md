@@ -30,23 +30,24 @@ The output file name format is 'annotated_data_\<timestamp\>.tsv'
 The file that is produced has tab separated values, one set of annotations per line, and looks like this:
 ```
 variant assembly_name   seq_region_name start   end     most_severe_consequence strand  genes
-NC_000001.11:g.215674515G>A     GRCh38  missense_variant        1       215674515       215674515       1       USH2A
-NC_000001.11:g.40819893G>A      GRCh38  missense_variant        1       40819893        40819893        1       KCNQ4
-NC_000002.12:g.39006443C>T      GRCh38  synonymous_variant      2       39006443        39006443        1       SOS1
-NC_000006.12:g.152387156G>A     GRCh38  synonymous_variant      6       152387156       152387156       1       SYNE1
-NC_000001.11:g.215674515G>A     GRCh38  missense_variant        1       215674515       215674515       1       USH2A
+NC_000001.11:g.215674515G>A     GRCh38  1       215674515       215674515       missense_variant        1       USH2A
+NC_000001.11:g.40819893G>A      GRCh38  1       40819893        40819893        missense_variant        1       KCNQ4
+NC_000002.12:g.39006443C>T      GRCh38  2       39006443        39006443        synonymous_variant      1       SOS1
+NC_000006.12:g.152387156G>A     GRCh38  6       152387156       152387156       synonymous_variant      1       SYNE1
+NC_000001.11:g.215674515G>A     GRCh38  1       215674515       215674515       missense_variant        1       USH2A
 ```
 ### Screen Output
-The program will display the variant id, and will display any variants that errored along with the response code that was returned as it processes the variants:
+The program will display similarly to the file, but with the filename, and will display any variants that errored along with the response code that was returned as it processes the variants:
 ```
-Processing Variants
-NC_000001.11:g.215674515G>A
-NC_000001.11:g.40819893G>A
 The input value: "NC_000001.11:g.40819893T>A" failed with a response of: "400"
-NC_000002.12:g.39006443C>T
-NC_000006.12:g.152387156G>A
-NC_000001.11:g.215674515G>A
-Done Processing Variants, output written to annotated_data_20231004-112430.tsv
+variant assembly_name   seq_region_name start   end     most_severe_consequence strand  genes
+NC_000001.11:g.215674515G>A     GRCh38  1       215674515       215674515       missense_variant        1       USH2A
+NC_000001.11:g.40819893G>A      GRCh38  1       40819893        40819893        missense_variant        1       KCNQ4
+NC_000002.12:g.39006443C>T      GRCh38  2       39006443        39006443        synonymous_variant      1       SOS1
+NC_000006.12:g.152387156G>A     GRCh38  6       152387156       152387156       synonymous_variant      1       SYNE1
+NC_000001.11:g.215674515G>A     GRCh38  1       215674515       215674515       missense_variant        1       USH2A
+
+Done Processing Variants, output written to annotated_data_20231004-134026.tsv
 ```
 
 ## Code Planning

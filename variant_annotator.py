@@ -34,10 +34,10 @@ class VariantAnnotator:
             annotation_dict = {
                 'variant': variant_in,
                 'assembly_name': annotation_json_data['assembly_name'],
-                'most_severe_consequence': annotation_json_data['most_severe_consequence'],
                 'seq_region_name': annotation_json_data['seq_region_name'],
                 'start': annotation_json_data['start'],
                 'end': annotation_json_data['end'],
+                'most_severe_consequence': annotation_json_data['most_severe_consequence'],
                 'strand': annotation_json_data['strand'],
                 'gene_symbol': annotation_json_data['transcript_consequences'][0]['gene_symbol']
             }
@@ -63,10 +63,10 @@ class VariantAnnotator:
                 [
                     annotation_in['variant'],
                     annotation_in['assembly_name'],
-                    annotation_in['most_severe_consequence'],
                     annotation_in['seq_region_name'],
                     annotation_in['start'],
                     annotation_in['end'],
+                    annotation_in['most_severe_consequence'],
                     annotation_in['strand'],
                     annotation_in['gene_symbol']
                 ]
