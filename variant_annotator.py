@@ -87,8 +87,10 @@ class VariantAnnotator:
 
 v = VariantAnnotator()
 # v.get_variants_from_file('variants.txt')
+print('Processing Variants', file=sys.stdout)
 for variant in v.variant_list:
     annotation = v.get_annotations(variant)
     if annotation:
         v.process_results_to_file(annotation)
+print('Done Processing Variants, output written to ' + v.filename_out, file=sys.stdout)
 
