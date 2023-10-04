@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 import csv
 import requests
 import time
+import sys
 
 
 class VariantAnnotator:
@@ -8,9 +11,17 @@ class VariantAnnotator:
     variant_list = []
     
     def __init__(self) -> None:
+        # maybe move data dir here?
         timestr = time.strftime("%Y%m%d-%H%M%S")
-        self.filename = 'variants_data_' + timestr + '.tsv'
+        self.filename_out = 'annotated_data_' + timestr + '.tsv'
+        self.create_output_file()
+        self.read_stdin()
     
+    def read_stdin(self):
+        for line in sys.stdin:
+            self.variant_list.append(line.strip())
+        print(str(self.variant_list))
+            
     def get_variants_from_file(self, filename_in) -> None:
         # TODO: fix this data dir to be more local. very important
         data_dir = '/home/max/python/myome/myome_challenge/'
@@ -19,7 +30,7 @@ class VariantAnnotator:
             self.variant_list = my_file.read().splitlines()  # removes newline and spaces
             
     def get_annotations(self, variant_in) -> dict:
-        # TODO: test for variant_in
+        # TODO: test for variant_in send err to stderr
     
         url = 'https://rest.ensembl.org/vep/human/hgvs/' + variant_in
         response = requests.get(url, headers={ "Content-Type" : "application/json"})
@@ -48,13 +59,13 @@ class VariantAnnotator:
             
     def create_output_file(self)-> None:
         # TODO: fix the path that this file gets written to
-        with open(self.filename, 'w', newline='') as tsvfile:
+        with open(self.filename_out, 'w', newline='') as tsvfile:
             writer = csv.writer(tsvfile, delimiter='\t', lineterminator='\n')
             writer.writerow(['variant', 'assembly_name', 'seq_region_name', 'start', 'end', 'most_severe_consequence', 'strand', 'genes'])
 
     def process_results_to_file(self, annotation_in) -> None:
         # TODO: fix the path that this file gets written to
-        with open(self.filename, 'a', newline='') as tsvfile_data:
+        with open(self.filename_out, 'a', newline='') as tsvfile_data:
             writer = csv.writer(tsvfile_data, delimiter='\t', lineterminator='\n')
             # writerow takes single arg, so putting values in a single array element
             writer.writerow(
@@ -77,8 +88,7 @@ class VariantAnnotator:
 
 v = VariantAnnotator()
 # varient_in = input('$ ')
-v.create_output_file()
-v.get_variants_from_file('variants.txt')
+# v.get_variants_from_file('variants.txt')
 for variant in v.variant_list:
     annotation = v.get_annotations(variant)
     if annotation:
