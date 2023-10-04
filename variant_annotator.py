@@ -11,29 +11,27 @@ class VariantAnnotator:
     variant_list = []
     
     def __init__(self) -> None:
-        # maybe move data dir here?
         timestr = time.strftime("%Y%m%d-%H%M%S")
         self.filename_out = 'annotated_data_' + timestr + '.tsv'
         self.create_output_file()
-        self.read_stdin()
+        self.read_stdin_clean()
     
-    def read_stdin(self):
+    def read_stdin_clean(self):
+        # TODO: check for stdin
         for line in sys.stdin:
-            self.variant_list.append(line.strip())
-        print(str(self.variant_list))
+            self.variant_list.append(line.strip())  # Remove trailing whitespace and return chars
+
             
-    def get_variants_from_file(self, filename_in) -> None:
-        # TODO: fix this data dir to be more local. very important
-        data_dir = '/home/max/python/myome/myome_challenge/'
-        with open(data_dir + filename_in) as my_file:
-            # self.variant_list = my_file.readlines()
-            self.variant_list = my_file.read().splitlines()  # removes newline and spaces
+    # def get_variants_from_file(self, filename_in) -> None:
+    #     # TODO: fix this data dir to be more local. very important
+    #     data_dir = '/home/max/python/myome/myome_challenge/'
+    #     with open(data_dir + filename_in) as my_file:
+    #         # self.variant_list = my_file.readlines()
+    #         self.variant_list = my_file.read().splitlines()  # removes newline and spaces
             
-    def get_annotations(self, variant_in) -> dict:
-        # TODO: test for variant_in send err to stderr
-    
+    def get_annotations(self, variant_in) -> dict:    
         url = 'https://rest.ensembl.org/vep/human/hgvs/' + variant_in
-        response = requests.get(url, headers={ "Content-Type" : "application/json"})
+        response = requests.get(url, headers={"Content-Type" : "application/json"})
         
         # Only process successful (200) responses
         if response.status_code == 200:
@@ -52,10 +50,11 @@ class VariantAnnotator:
                 'strand': annotation_json_data['strand'],
                 'gene_symbol': annotation_json_data['transcript_consequences'][0]['gene_symbol']
             }
+            print(variant_in, file=sys.stdout)
             return annotation_dict
         else:
-            # TODO: put in some kind of error logging listing the variant and the response
-            return {} # This might be better as None?
+            print('The input value: "' + variant_in + '" failed with a response of: "' + str(response.status_code) + '"', file=sys.stderr)
+            return {} # This could also return None but we returns a dict for funtion output consistancy
             
     def create_output_file(self)-> None:
         # TODO: fix the path that this file gets written to
@@ -67,7 +66,7 @@ class VariantAnnotator:
         # TODO: fix the path that this file gets written to
         with open(self.filename_out, 'a', newline='') as tsvfile_data:
             writer = csv.writer(tsvfile_data, delimiter='\t', lineterminator='\n')
-            # writerow takes single arg, so putting values in a single array element
+            # writerow takes single arg, so putting values in a single array element, I could probably just pass annotation_in, but the order of elements is not guaranteed to match the header.
             writer.writerow(
                 [
                     annotation_in['variant'],
@@ -82,12 +81,11 @@ class VariantAnnotator:
             )
         
 
-###########################
-# Run the program
-###########################
+####################################################
+# Instantiate the Object  and Process the Variants #
+####################################################
 
 v = VariantAnnotator()
-# varient_in = input('$ ')
 # v.get_variants_from_file('variants.txt')
 for variant in v.variant_list:
     annotation = v.get_annotations(variant)
