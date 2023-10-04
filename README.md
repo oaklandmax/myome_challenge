@@ -1,11 +1,11 @@
 # MyOme Variant Annotation Technical Challenge
 
 ## Description
-This package takes input from a file of genome variations and looks up the specified annotions in the ensembl.org database via their REST service, and writes the output to a Tab Separated Values (TSV) file in the directory the user was in when executing the file. 
+This package takes input from a file of genome variations and looks up the specified annotations in the ensembl.org database via their REST service, and writes the output to a Tab Separated Values (TSV) file in the directory the user was in when executing the file. 
 
 The output file name format is 'annotated_data_\<timestamp\>.tsv'
 
-## Installation instuctions
+## Installation instructions
 
 Change directory to wherever you installed the variant_annotator.py file is and make it executable if it is not already:
 ```
@@ -50,7 +50,7 @@ Done Processing Variants, output written to annotated_data_20231004-112430.tsv
 ```
 
 ## Code Planning
-As described this task could have been done proceedurally, but I think it is both more readable, and more flexible with an OOP structure. Even so, I have kept the instatiation as small as possible.
+As described this task could have been done procedurally, but I think it is both more readable, and more flexible with an OOP structure. Even so, I have kept the instantiation as small as possible.
 
 I chose the packages to include carefully.
 
@@ -61,17 +61,17 @@ I think we are currently using HGVS format for the variation, but I'n not an exp
 
 ##### Start-ups and start-up employees must balance quick and satisfactory (i.e., good enough) results with more deliberate and reliable results. The same is true for code. You do not have enough time to write the ultimate answer to variant annotation. What is important to get "right" now and what can be deferred.
 
-My priorities when creating this project was to get the variant list from the user as specified, retreive the data variant annotation data from the server, process it to extract the relevant data, and write it to the file in the specified format. Thats the minimum viable product to start with.
+My priorities when creating this project was to get the variant list from the user as specified, retrieve the data variant annotation data from the server, process it to extract the relevant data, and write it to the file in the specified format. Thats the minimum viable product to start with.
 
 Following that, I added error checking where quickly possible, some logging of activity and errors to stdout and stderr, and commented the code for clarity.
 
-Next steps would be to add execption handling for stdin and other points of possible failure and some testing, though if I were doing TDD that would have preceeded occuerred while developing the functions or before.
+Next steps would be to add exception handling for stdin and other points of possible failure and some testing, though if I were doing TDD that would have preceded occurred while developing the functions or before.
 
-Lastly I am focussed on packaging the files and uploading them. I have built python libraries in pip, but havent done much packaging in github.
+Lastly I am focused on packaging the files and uploading them.
 
 ##### What's the simplest method you can think of to handle cases of duplicated variants in the input?
 
-The simplest would be to check the variant id against the list of already completed queries. If I am processing item 12 and there is a duplicate item in the data array at position 4, then we can see 12 is a dupicate of a variant that has already been run. Or if you are checking across multiple runs of files, you could just make a db table and add them as you go, making a quick check to see if the variant is listed. This could also be done with a flat file.
+The simplest would be to check the variant id against the list of already completed queries. If I am processing item 12 and there is a duplicate item in the data array at position 4, then we can see 12 is a duplicate of a variant that has already been run. Or if you are checking across multiple runs of files, you could just make a db table and add them as you go, making a quick check to see if the variant is listed. This could also be done with a flat file.
 
 ##### What optimizations would you pursue in your code if you had time? How would you prioritize your effort?
 
